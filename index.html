@@ -9,7 +9,6 @@
   :root {
     --bg: #f7f6f2;
     --surface: #ffffff;
-    --grid: rgba(0,0,0,0.04);
     --text: #111111;
     --text-mid: #444444;
     --text-dim: #888888;
@@ -29,23 +28,24 @@
     font-family: 'Barlow', sans-serif;
     color: var(--text);
     padding: 48px 44px 90px;
-    min-width: 920px;
+    min-width: 960px;
   }
   body::before {
     content: '';
     position: fixed; inset: 0;
     background-image:
-      linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
     background-size: 36px 36px;
     pointer-events: none; z-index: 0;
   }
-  .page { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; }
+  .page { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; }
 
+  /* ── MASTHEAD ── */
   .masthead {
     display: flex; align-items: flex-end; justify-content: space-between;
     border-bottom: 2px solid var(--text);
-    padding-bottom: 18px; margin-bottom: 48px;
+    padding-bottom: 18px; margin-bottom: 52px;
   }
   .masthead h1 {
     font-family: 'Barlow Condensed', sans-serif;
@@ -61,12 +61,18 @@
     padding: 6px 12px; border-radius: 2px; color: var(--text-mid); text-transform: uppercase;
   }
 
-  .layer-wrap { position: relative; }
-  .layer-row { display: grid; grid-template-columns: 240px 1fr; position: relative; }
+  /* ── LAYER LAYOUT: left label + right diagram box ── */
+  .layer-wrap { position: relative; margin-bottom: 0; }
+  .layer-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    position: relative;
+  }
 
+  /* ── LEFT LABEL BOX ── */
   .layer-header-box {
     position: relative; border: 1.5px solid;
-    padding: 18px 20px 18px 18px;
+    padding: 18px 16px 18px 16px;
     display: flex; flex-direction: column; justify-content: center;
     gap: 5px; z-index: 2; background: var(--surface);
   }
@@ -76,51 +82,111 @@
   }
   .lh-title {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 21px; font-weight: 800; letter-spacing: -.01em; line-height: 1.1; color: var(--text);
+    font-size: 20px; font-weight: 800; letter-spacing: -.01em; line-height: 1.1; color: var(--text);
   }
-  .lh-tool { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: var(--text-dim); margin-top: 2px; }
-  .lh-icon { position: absolute; bottom: 12px; right: 12px; opacity: .1; }
+  .lh-tool { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+  .lh-icon { position: absolute; bottom: 10px; right: 10px; opacity: .08; }
 
+  /* corner marks */
   .cm { position: absolute; width: 8px; height: 8px; }
   .cm-tl { top: -1.5px; left: -1.5px; border-top: 3px solid; border-left: 3px solid; }
   .cm-br { bottom: -1.5px; right: -1.5px; border-bottom: 3px solid; border-right: 3px solid; }
 
-  .layer-branches {
+  /* ── RIGHT DIAGRAM CONTENT AREA ── */
+  .layer-body {
     border: 1.5px solid; border-left: none;
-    padding: 18px 24px 20px;
-    display: flex; flex-direction: column; gap: 16px;
     background: var(--surface);
+    padding: 20px 24px 22px;
   }
 
-  .branch { display: flex; align-items: flex-start; }
+  /* ── DIAGRAM NODES GRID ── */
+  .diag-nodes {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .diag-node {
+    border: 1.5px solid; border-radius: 4px;
+    padding: 8px 14px 8px 12px;
+    display: flex; flex-direction: column; gap: 3px;
+    min-width: 160px; flex: 1;
+    position: relative; background: var(--surface);
+  }
+  .dn-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+  }
+  .dn-title {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800;
+    line-height: 1.2; color: var(--text);
+  }
+  .dn-text { font-size: 11.5px; line-height: 1.6; color: var(--text-mid); margin-top: 2px; }
+  .dn-arrow-right {
+    position: absolute; right: -13px; top: 50%; transform: translateY(-50%);
+    z-index: 3;
+  }
+
+  /* ── FLOW ARROWS BETWEEN NODES ── */
+  .flow-row {
+    display: flex; align-items: center; gap: 0; margin-bottom: 12px; flex-wrap: nowrap;
+  }
+  .flow-node {
+    border: 1.5px solid; border-radius: 4px;
+    padding: 8px 12px; flex: 1;
+    min-width: 0;
+    position: relative; background: var(--surface);
+  }
+  .flow-arrow {
+    flex-shrink: 0; width: 36px; display: flex; flex-direction: column; align-items: center;
+    gap: 2px;
+  }
+  .fa-line { height: 1.5px; width: 100%; }
+  .fa-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: var(--text-dim);
+    text-align: center; white-space: nowrap;
+  }
+  .fa-arrowhead {
+    width: 0; height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left-width: 6px; border-left-style: solid;
+    align-self: flex-end;
+  }
+
+  /* ── BRANCH ITEMS (text bullets inside each layer) ── */
+  .branch-list { display: flex; flex-direction: column; gap: 14px; }
+  .branch {
+    display: flex; align-items: flex-start; gap: 0;
+    padding-left: 0;
+  }
   .branch-line {
     display: flex; flex-direction: column; align-items: center;
-    padding-top: 5px; flex-shrink: 0; width: 34px;
+    padding-top: 5px; flex-shrink: 0; width: 30px;
   }
   .branch-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; z-index: 1; }
-  .branch-vert { width: 1px; flex: 1; min-height: 10px; opacity: .18; }
-  .branch-stem { width: 18px; height: 1px; flex-shrink: 0; margin-top: 5px; align-self: flex-start; opacity: .3; }
+  .branch-vert { width: 1px; flex: 1; min-height: 10px; opacity: .2; }
+  .branch-stem { width: 16px; height: 1px; flex-shrink: 0; margin-top: 5px; align-self: flex-start; opacity: .3; }
   .branch-content { flex: 1; }
   .branch-label {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 15px; font-weight: 700; letter-spacing: .01em; line-height: 1.2;
+    font-size: 14px; font-weight: 700; letter-spacing: .01em; line-height: 1.2;
   }
-  .branch-text { font-size: 13px; line-height: 1.72; color: var(--text-mid); margin-top: 4px; }
+  .branch-text { font-size: 12.5px; line-height: 1.72; color: var(--text-mid); margin-top: 3px; }
   .branch-code {
-    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; line-height: 1.75;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; line-height: 1.75;
     background: #f3f2ee; border: 1px solid rgba(0,0,0,0.09); border-radius: 4px;
-    padding: 8px 11px; margin-top: 7px; color: #2a2a2a; white-space: pre-wrap;
+    padding: 7px 10px; margin-top: 6px; color: #2a2a2a; white-space: pre-wrap;
   }
 
-  .layer-connector { height: 36px; position: relative; }
-  .lc-line { width: 2px; height: 100%; position: absolute; left: 119px; }
+  /* ── CONNECTOR BETWEEN LAYERS ── */
+  .layer-connector { height: 40px; position: relative; }
+  .lc-line { width: 2px; height: 100%; position: absolute; left: 99px; }
   .lc-arrow {
-    position: absolute; left: 114px; bottom: 0;
+    position: absolute; left: 94px; bottom: 0;
     border-left: 5px solid transparent; border-right: 5px solid transparent;
     border-top-width: 8px; border-top-style: solid;
   }
 
-  /* ── METRICS BLOCK ── */
+  /* ── METRICS ── */
   .mblock {
     margin-top: 8px; background: #f8f7f3;
     border: 1px solid rgba(0,0,0,0.09); border-radius: 5px; overflow: hidden;
@@ -133,17 +199,10 @@
     display: flex; align-items: center; gap: 8px;
   }
   .mblock-hd-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-
   .m3grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-  .mcell {
-    padding: 10px 14px;
-    border-right: 1px solid rgba(0,0,0,0.06);
-  }
+  .mcell { padding: 10px 14px; border-right: 1px solid rgba(0,0,0,0.06); }
   .mcell:last-child { border-right: none; }
-  .mval {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px; font-weight: 800; line-height: 1; letter-spacing: -.01em;
-  }
+  .mval { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; line-height: 1; letter-spacing: -.01em; }
   .munit { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; margin-left: 1px; }
   .mlabel { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: var(--text-dim); margin-top: 3px; }
   .mbar-wrap { margin-top: 5px; height: 4px; background: rgba(0,0,0,0.07); border-radius: 2px; overflow: hidden; }
@@ -154,23 +213,20 @@
     font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700;
     letter-spacing: .05em; padding: 2px 8px; border-radius: 20px;
   }
-
   .tbl { width: 100%; border-collapse: collapse; }
   .tbl th {
     font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase; padding: 6px 11px;
+    letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px;
     background: #f0efe9; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08);
     color: var(--text-dim);
   }
   .tbl td {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 7px 11px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 6px 10px;
     border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-mid);
   }
   .tbl tr:last-child td { border-bottom: none; }
   .tbl td:first-child { color: var(--text); font-weight: 600; }
-
-  .barchart { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; }
-  .brow { }
+  .barchart { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
   .brow-top { display: flex; justify-content: space-between; margin-bottom: 3px; }
   .brow-name { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-mid); }
   .brow-val { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; }
@@ -181,17 +237,15 @@
     display: flex; justify-content: space-between; align-items: center;
   }
   .brow-total-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-dim); }
-  .brow-total-val {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 20px; font-weight: 800; letter-spacing: -.01em;
-  }
+  .brow-total-val { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
 
-  /* ── TRI-STORE ── */
+  /* ── TRI-STORE: COLUMN (vertical stacked per store) ── */
   .tri-header {
     border: 1.5px solid rgba(0,0,0,0.15); border-bottom: none;
     padding: 11px 20px; background: var(--surface);
-    display: flex; align-items: center; gap: 12px; position: relative;
+    display: flex; align-items: center; gap: 12px;
   }
+  /* Three columns side-by-side */
   .tri-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
   .tri-col {
     border: 1.5px solid; border-right: none;
@@ -211,6 +265,88 @@
     padding: 6px 9px; border-radius: 3px; line-height: 1.65; white-space: pre-wrap;
   }
 
+  /* ── DIAGRAM: ARCH NODE BOXES ── */
+  /* Service-box style nodes used in flow diagrams */
+  .svc-box {
+    border: 1.5px solid; border-radius: 4px;
+    padding: 7px 12px; background: var(--surface);
+    display: inline-flex; flex-direction: column; gap: 2px;
+  }
+  .svc-box .svc-title {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800;
+    letter-spacing: .01em;
+  }
+  .svc-box .svc-sub {
+    font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: var(--text-dim);
+  }
+
+  /* Dashed flow arrow */
+  .dashed-arrow {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1px; min-width: 44px;
+  }
+  .dashed-line {
+    border-top: 1.5px dashed; width: 100%;
+  }
+  .dashed-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 8px;
+    text-align: center; color: var(--text-dim);
+  }
+  .dashed-arrowhead {
+    width: 0; height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left-width: 6px; border-left-style: solid;
+    align-self: flex-end; margin-top: -5px;
+  }
+
+  /* vertical arrow */
+  .v-arrow {
+    display: flex; flex-direction: column; align-items: center;
+    width: 2px; margin: 0 auto;
+  }
+  .v-arrow-line { width: 2px; flex: 1; }
+  .v-arrow-head {
+    width: 0; height: 0;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top-width: 7px; border-top-style: solid;
+    margin-left: -4px;
+  }
+
+  /* Gate decision diamond */
+  .gate-diamond {
+    width: 80px; height: 44px; position: relative; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gate-diamond svg { position: absolute; }
+  .gate-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700;
+    text-align: center; z-index: 1; position: relative; line-height: 1.2;
+  }
+
+  /* Cache hit / miss branch labels */
+  .gate-branch-row {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; margin-top: 4px;
+  }
+  .gate-branch-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: var(--text-dim);
+    text-align: center;
+  }
+
+  /* Parallel async block */
+  .parallel-wrap {
+    border: 1.5px dashed rgba(0,0,0,0.18); border-radius: 6px;
+    padding: 12px 14px; position: relative; margin: 4px 0;
+  }
+  .parallel-label {
+    position: absolute; top: -9px; left: 16px;
+    background: var(--bg); padding: 0 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim);
+  }
+
+  /* ── FEEDBACK BADGE ── */
   .fb-badge {
     display: inline-flex; align-items: center; gap: 6px;
     background: #edf7f2; border: 1px solid rgba(22,94,50,0.22);
@@ -219,11 +355,51 @@
     margin-top: 4px; width: fit-content;
   }
 
+  /* ── FOOTER ── */
   .footer-bar {
     margin-top: 60px; border-top: 1px solid rgba(0,0,0,0.1);
     padding-top: 18px; display: flex; justify-content: space-between; align-items: center;
   }
   .footer-bar span { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: .05em; }
+
+  /* ── DIAG FLOW: used inside layer bodies ── */
+  .diag-flow {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .diag-row {
+    display: flex; align-items: center; gap: 0;
+  }
+  .diag-spacer { flex: 1; }
+
+  /* small inline arrow SVG helper */
+  .arr { display:inline-flex; align-items:center; }
+
+  /* Store node box with side marker */
+  .store-node {
+    border: 1.5px solid; border-radius: 4px;
+    padding: 7px 11px; background: var(--surface);
+    flex: 1; min-width: 0;
+  }
+  .store-node .sn-tag { font-family:'IBM Plex Mono',monospace; font-size:8px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  .store-node .sn-name { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; margin-top:1px; }
+  .store-node .sn-sub { font-family:'IBM Plex Mono',monospace; font-size:8.5px; color:var(--text-dim); margin-top:1px; }
+
+  /* Horizontal dashed connector line with arrowhead */
+  .hconn {
+    flex-shrink:0; width:38px; display:flex; align-items:center; position:relative;
+  }
+  .hconn-line { width:100%; border-top:1.5px dashed rgba(0,0,0,0.25); }
+  .hconn-arr {
+    position:absolute; right:-1px; top:50%; transform:translateY(-50%);
+    width:0; height:0;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+    border-left:6px solid rgba(0,0,0,0.28);
+  }
+
+  /* Bidirectional arrow */
+  .biconn { flex-shrink:0; width:38px; display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .biconn-lbl { font-family:'IBM Plex Mono',monospace; font-size:7.5px; color:var(--text-dim); }
 </style>
 </head>
 <body>
@@ -244,7 +420,6 @@
   <!-- ════════════════════════════════════ -->
   <div class="layer-wrap">
     <div class="layer-row">
-
       <div class="layer-header-box" style="border-color:var(--l1);">
         <div class="cm cm-tl" style="border-color:var(--l1);"></div>
         <div class="cm cm-br" style="border-color:var(--l1);"></div>
@@ -260,190 +435,186 @@
         </div>
       </div>
 
-      <div class="layer-branches" style="border-color:var(--l1);">
+      <div class="layer-body" style="border-color:var(--l1);">
 
-        <!-- Branch 1 -->
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l1);"></div>
-            <div class="branch-vert" style="background:var(--l1);"></div>
+        <!-- Architecture flow diagram -->
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+
+          <!-- Row 1: Query IN → Embed → Cache Compare -->
+          <div style="display:flex;align-items:center;gap:0;">
+            <div class="store-node" style="border-color:var(--l1);max-width:140px;flex:0 0 140px;">
+              <div class="sn-tag" style="color:var(--l1);">INPUT</div>
+              <div class="sn-name" style="color:var(--l1);">Technician Query</div>
+              <div class="sn-sub">raw text → embedding</div>
+            </div>
+            <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+            <div class="store-node" style="border-color:var(--l1);max-width:150px;flex:0 0 150px;">
+              <div class="sn-tag" style="color:var(--l1);">ENCODE</div>
+              <div class="sn-name" style="color:var(--l1);">Vector Embed</div>
+              <div class="sn-sub">dense cosine-space vec</div>
+            </div>
+            <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+            <div class="store-node" style="border-color:var(--l1);">
+              <div class="sn-tag" style="color:var(--l1);">COMPARE</div>
+              <div class="sn-name" style="color:var(--l1);">Redis Cache Lookup</div>
+              <div class="sn-sub">cosine_sim(query_vec, cache_vec)</div>
+            </div>
           </div>
-          <div class="branch-stem" style="background:var(--l1);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l1);">Vector Embedding Match</div>
-            <div class="branch-text">Every incoming technician query is immediately converted into a dense vector and compared against a cache of previously resolved issues using cosine similarity. This happens before any database is touched, ensuring repeated or semantically similar questions are answered in under 30 milliseconds without triggering any downstream retrieval pipeline.</div>
+
+          <!-- Row 2: Decision gate -->
+          <div style="display:flex;align-items:flex-start;gap:16px;padding-left:330px;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex:1;">
+              <!-- vertical line down from cache -->
+              <div style="width:2px;height:14px;background:var(--l1);"></div>
+              <!-- diamond -->
+              <div style="position:relative;width:120px;height:46px;display:flex;align-items:center;justify-content:center;">
+                <svg width="120" height="46" viewBox="0 0 120 46" fill="none" style="position:absolute;">
+                  <polygon points="60,2 118,23 60,44 2,23" stroke="#B8720C" stroke-width="1.5" fill="rgba(184,114,12,0.06)"/>
+                </svg>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;color:var(--l1);text-align:center;line-height:1.3;z-index:1;">sim &gt; 0.95?</span>
+              </div>
+              <!-- YES / NO branches -->
+              <div style="display:grid;grid-template-columns:1fr 2px 1fr;width:280px;margin-top:4px;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--l4-vec);font-weight:700;">YES</div>
+                  <div style="width:2px;height:20px;background:var(--l4-vec);"></div>
+                  <div class="store-node" style="border-color:var(--l4-vec);width:110px;text-align:center;">
+                    <div class="sn-tag" style="color:var(--l4-vec);">HIT · &lt;30ms</div>
+                    <div class="sn-name" style="color:var(--l4-vec);">Return Cached</div>
+                    <div class="sn-sub">zero DB cost, pipeline ends</div>
+                  </div>
+                </div>
+                <div style="background:rgba(0,0,0,0.1);width:2px;height:80px;margin:0 auto;margin-top:26px;"></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--l5);font-weight:700;">NO</div>
+                  <div style="width:2px;height:20px;background:var(--l5);"></div>
+                  <div class="store-node" style="border-color:var(--l5);width:110px;text-align:center;">
+                    <div class="sn-tag" style="color:var(--l5);">MISS</div>
+                    <div class="sn-name" style="color:var(--l5);">Forward to L2</div>
+                    <div class="sn-sub">full pipeline continues</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Branch 2 -->
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l1);"></div>
-            <div class="branch-vert" style="background:var(--l1);"></div>
+        <!-- Branch details -->
+        <div class="branch-list">
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l1);"></div>
+              <div class="branch-vert" style="background:var(--l1);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l1);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l1);">Vector Embedding Match</div>
+              <div class="branch-text">Every incoming technician query is immediately converted into a dense vector and compared against a cache of previously resolved issues using cosine similarity. This happens before any database is touched, ensuring repeated or semantically similar questions are answered in under 30 milliseconds without triggering any downstream retrieval pipeline.</div>
+            </div>
           </div>
-          <div class="branch-stem" style="background:var(--l1);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l1);">Gate Logic — Similarity &gt; 0.95 Returns Instantly</div>
-            <div class="branch-text">If the similarity score between the incoming query vector and a cached result exceeds 0.95, the system returns the cached answer immediately and the full pipeline terminates here — no LLM call, no database query, no orchestration overhead. If the score falls below 0.95, the query is classified as a cache miss and forwarded to the pre-processor with its raw text intact.</div>
-            <div class="branch-code">IF cosine_sim(query_vec, cache_vec) > 0.95
+
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l1);"></div>
+              <div class="branch-vert" style="background:var(--l1);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l1);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l1);">Gate Logic — Similarity &gt; 0.95 Returns Instantly</div>
+              <div class="branch-text">If the similarity score between the incoming query vector and a cached result exceeds 0.95, the system returns the cached answer immediately and the full pipeline terminates here — no LLM call, no database query, no orchestration overhead. If the score falls below 0.95, the query is classified as a cache miss and forwarded to the pre-processor with its raw text intact.</div>
+              <div class="branch-code">IF cosine_sim(query_vec, cache_vec) > 0.95
   → RETURN cached_response          # &lt;30ms, zero DB cost
 ELSE
   → FORWARD to L2 Pre-Processor     # full pipeline continues</div>
+            </div>
           </div>
-        </div>
 
-        <!-- Branch 3: LATENCY & THROUGHPUT -->
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l1);"></div>
-            <div class="branch-vert" style="background:var(--l1);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l1);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l1);">Latency &amp; Throughput — Semantic Cache Impact</div>
-            <div class="branch-text">The semantic cache is the single highest-leverage component in the pipeline for operational efficiency. By intercepting repeated and near-identical queries before they reach LangGraph, it eliminates the dominant cost contributors — LLM inference time and parallel database I/O — on a per-query basis. The figures below reflect a warmed cache at a plant facility running a typical mix of maintenance shift queries.</div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l1);"></div>
+              <div class="branch-vert" style="background:var(--l1);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l1);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l1);">Latency &amp; Throughput — Semantic Cache Impact</div>
+              <div class="branch-text">The semantic cache is the single highest-leverage component in the pipeline for operational efficiency. By intercepting repeated and near-identical queries before they reach LangGraph, it eliminates the dominant cost contributors — LLM inference time and parallel database I/O — on a per-query basis. The figures below reflect a warmed cache at a plant facility running a typical mix of maintenance shift queries.</div>
 
-            <!-- Response latency 3-cell -->
-            <div class="mblock">
-              <div class="mblock-hd" style="color:var(--l1);">
-                <div class="mblock-hd-dot" style="background:var(--l1);"></div>
-                Response latency profile — cache hit vs full pipeline
+              <div class="mblock">
+                <div class="mblock-hd" style="color:var(--l1);">
+                  <div class="mblock-hd-dot" style="background:var(--l1);"></div>
+                  Response latency profile — cache hit vs full pipeline
+                </div>
+                <div class="m3grid">
+                  <div class="mcell">
+                    <div class="mval" style="color:var(--l1);">~25<span class="munit">ms</span></div>
+                    <div class="mlabel">Cache hit latency (p50)</div>
+                    <div class="mbar-wrap"><div class="mbar" style="width:3%;background:var(--l1);"></div></div>
+                    <div class="mvs">vs 800–1,400ms full pipeline</div>
+                    <div class="mbadge" style="background:#fdf0de;color:var(--l1);border:1px solid rgba(184,114,12,0.2);">97% faster</div>
+                  </div>
+                  <div class="mcell" style="border-left:1px solid rgba(0,0,0,0.06);">
+                    <div class="mval" style="color:var(--l4-sql);">~810<span class="munit">ms</span></div>
+                    <div class="mlabel">Full pipeline p50 (cache miss)</div>
+                    <div class="mbar-wrap"><div class="mbar" style="width:58%;background:var(--l4-sql);"></div></div>
+                    <div class="mvs">Parallel async saves ~400ms vs serial</div>
+                    <div class="mbadge" style="background:#e5eef9;color:var(--l4-sql);border:1px solid rgba(21,95,173,0.2);">Baseline miss</div>
+                  </div>
+                  <div class="mcell" style="border-left:1px solid rgba(0,0,0,0.06);">
+                    <div class="mval" style="color:#999;">~1,400<span class="munit">ms</span></div>
+                    <div class="mlabel">Serial pipeline p95 (no cache)</div>
+                    <div class="mbar-wrap"><div class="mbar" style="width:100%;background:#d0cfcb;"></div></div>
+                    <div class="mvs">SQL → wait → Vector → wait → Graph</div>
+                    <div class="mbadge" style="background:#f2f1ed;color:#888;border:1px solid rgba(0,0,0,0.1);">Worst case</div>
+                  </div>
+                </div>
               </div>
-              <div class="m3grid">
-                <div class="mcell">
-                  <div class="mval" style="color:var(--l1);">~25<span class="munit">ms</span></div>
-                  <div class="mlabel">Cache hit latency (p50)</div>
-                  <div class="mbar-wrap"><div class="mbar" style="width:3%;background:var(--l1);"></div></div>
-                  <div class="mvs">vs 800–1,400ms full pipeline</div>
-                  <div class="mbadge" style="background:#fdf0de;color:var(--l1);border:1px solid rgba(184,114,12,0.2);">97% faster</div>
+
+              <div class="mblock" style="margin-top:10px;">
+                <div class="mblock-hd" style="color:var(--l1);">
+                  <div class="mblock-hd-dot" style="background:var(--l1);"></div>
+                  Throughput — queries per second at production concurrency
                 </div>
-                <div class="mcell" style="border-left:1px solid rgba(0,0,0,0.06);">
-                  <div class="mval" style="color:var(--l4-sql);">~810<span class="munit">ms</span></div>
-                  <div class="mlabel">Full pipeline p50 (cache miss)</div>
-                  <div class="mbar-wrap"><div class="mbar" style="width:58%;background:var(--l4-sql);"></div></div>
-                  <div class="mvs">Parallel async saves ~400ms vs serial</div>
-                  <div class="mbadge" style="background:#e5eef9;color:var(--l4-sql);border:1px solid rgba(21,95,173,0.2);">Baseline miss</div>
+                <table class="tbl">
+                  <thead>
+                    <tr>
+                      <th>Scenario</th><th>Cache hit rate</th><th>Effective QPS</th><th>LLM calls / min</th><th>Infra cost index</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>No cache — cold start</td><td>0%</td><td>~4 QPS</td><td>240</td><td>1.0× (baseline)</td></tr>
+                    <tr><td>Warmed — shift repeat queries</td><td>~45%</td><td style="color:var(--l1);font-weight:700;">~22 QPS</td><td>132</td><td style="color:var(--l1);font-weight:700;">0.55×</td></tr>
+                    <tr><td>High-repeat ops (same model)</td><td>~80%</td><td style="color:var(--l2);font-weight:700;">~60+ QPS</td><td>48</td><td style="color:var(--l2);font-weight:700;">0.20×</td></tr>
+                    <tr><td>Post-feedback — validated solutions cached</td><td>~90%</td><td style="color:var(--l7);font-weight:700;">~120 QPS</td><td>24</td><td style="color:var(--l7);font-weight:700;">0.10×</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="mblock" style="margin-top:10px;">
+                <div class="mblock-hd" style="color:var(--l1);">
+                  <div class="mblock-hd-dot" style="background:var(--l1);"></div>
+                  Full pipeline latency breakdown — cache miss path (p50)
                 </div>
-                <div class="mcell" style="border-left:1px solid rgba(0,0,0,0.06);">
-                  <div class="mval" style="color:#999;">~1,400<span class="munit">ms</span></div>
-                  <div class="mlabel">Serial pipeline p95 (no cache)</div>
-                  <div class="mbar-wrap"><div class="mbar" style="width:100%;background:#d0cfcb;"></div></div>
-                  <div class="mvs">SQL → wait → Vector → wait → Graph</div>
-                  <div class="mbadge" style="background:#f2f1ed;color:#888;border:1px solid rgba(0,0,0,0.1);">Worst case</div>
+                <div class="barchart">
+                  <div><div class="brow-top"><span class="brow-name">L2 Pre-processor (unit norm + entity link)</span><span class="brow-val" style="color:var(--l2);">~80ms</span></div><div class="brow-track"><div class="brow-fill" style="width:6%;background:var(--l2);"></div></div></div>
+                  <div><div class="brow-top"><span class="brow-name">L3 Orchestrator + entity extraction</span><span class="brow-val" style="color:var(--l3);">~60ms</span></div><div class="brow-track"><div class="brow-fill" style="width:4%;background:var(--l3);"></div></div></div>
+                  <div><div class="brow-top"><span class="brow-name">L4 Tri-store retrieval (parallel async)</span><span class="brow-val" style="color:var(--l4-sql);">~200ms</span></div><div class="brow-track"><div class="brow-fill" style="width:14%;background:var(--l4-sql);"></div></div></div>
+                  <div><div class="brow-top"><span class="brow-name">L5 RRF + BGE cross-encoder reranking</span><span class="brow-val" style="color:var(--l5);">~90ms</span></div><div class="brow-track"><div class="brow-fill" style="width:6%;background:var(--l5);"></div></div></div>
+                  <div><div class="brow-top"><span class="brow-name">L6 LLM generation (streaming, first token)</span><span class="brow-val" style="color:var(--l6);">~380ms</span></div><div class="brow-track"><div class="brow-fill" style="width:27%;background:var(--l6);"></div></div></div>
+                  <div class="brow-total"><span class="brow-total-label">Total p50 end-to-end (cache miss)</span><span class="brow-total-val">~810<span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:400;">ms</span></span></div>
                 </div>
               </div>
             </div>
-
-            <!-- Throughput table -->
-            <div class="mblock" style="margin-top:10px;">
-              <div class="mblock-hd" style="color:var(--l1);">
-                <div class="mblock-hd-dot" style="background:var(--l1);"></div>
-                Throughput — queries per second at production concurrency
-              </div>
-              <table class="tbl">
-                <thead>
-                  <tr>
-                    <th>Scenario</th>
-                    <th>Cache hit rate</th>
-                    <th>Effective QPS</th>
-                    <th>LLM calls / min</th>
-                    <th>Infra cost index</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>No cache — cold start</td>
-                    <td>0%</td>
-                    <td>~4 QPS</td>
-                    <td>240</td>
-                    <td>1.0× (baseline)</td>
-                  </tr>
-                  <tr>
-                    <td>Warmed — shift repeat queries</td>
-                    <td>~45%</td>
-                    <td style="color:var(--l1);font-weight:700;">~22 QPS</td>
-                    <td>132</td>
-                    <td style="color:var(--l1);font-weight:700;">0.55×</td>
-                  </tr>
-                  <tr>
-                    <td>High-repeat ops (same model)</td>
-                    <td>~80%</td>
-                    <td style="color:var(--l2);font-weight:700;">~60+ QPS</td>
-                    <td>48</td>
-                    <td style="color:var(--l2);font-weight:700;">0.20×</td>
-                  </tr>
-                  <tr>
-                    <td>Post-feedback — validated solutions cached</td>
-                    <td>~90%</td>
-                    <td style="color:var(--l7);font-weight:700;">~120 QPS</td>
-                    <td>24</td>
-                    <td style="color:var(--l7);font-weight:700;">0.10×</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Full pipeline latency breakdown bars -->
-            <div class="mblock" style="margin-top:10px;">
-              <div class="mblock-hd" style="color:var(--l1);">
-                <div class="mblock-hd-dot" style="background:var(--l1);"></div>
-                Full pipeline latency breakdown — cache miss path (p50)
-              </div>
-              <div class="barchart">
-                <div class="brow">
-                  <div class="brow-top">
-                    <span class="brow-name">L2 Pre-processor (unit norm + entity link)</span>
-                    <span class="brow-val" style="color:var(--l2);">~80ms</span>
-                  </div>
-                  <div class="brow-track"><div class="brow-fill" style="width:6%;background:var(--l2);"></div></div>
-                </div>
-                <div class="brow">
-                  <div class="brow-top">
-                    <span class="brow-name">L3 Orchestrator + entity extraction</span>
-                    <span class="brow-val" style="color:var(--l3);">~60ms</span>
-                  </div>
-                  <div class="brow-track"><div class="brow-fill" style="width:4%;background:var(--l3);"></div></div>
-                </div>
-                <div class="brow">
-                  <div class="brow-top">
-                    <span class="brow-name">L4 Tri-store retrieval (parallel async)</span>
-                    <span class="brow-val" style="color:var(--l4-sql);">~200ms</span>
-                  </div>
-                  <div class="brow-track"><div class="brow-fill" style="width:14%;background:var(--l4-sql);"></div></div>
-                </div>
-                <div class="brow">
-                  <div class="brow-top">
-                    <span class="brow-name">L5 RRF + BGE cross-encoder reranking</span>
-                    <span class="brow-val" style="color:var(--l5);">~90ms</span>
-                  </div>
-                  <div class="brow-track"><div class="brow-fill" style="width:6%;background:var(--l5);"></div></div>
-                </div>
-                <div class="brow">
-                  <div class="brow-top">
-                    <span class="brow-name">L6 LLM generation (streaming, first token)</span>
-                    <span class="brow-val" style="color:var(--l6);">~380ms</span>
-                  </div>
-                  <div class="brow-track"><div class="brow-fill" style="width:27%;background:var(--l6);"></div></div>
-                </div>
-                <div class="brow-total">
-                  <span class="brow-total-label">Total p50 end-to-end (cache miss)</span>
-                  <span class="brow-total-val">~810<span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:400;">ms</span></span>
-                </div>
-              </div>
-            </div>
-
           </div>
-        </div>
 
-        <!-- Branch 4: Example -->
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:rgba(184,114,12,0.3);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l1);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l1);">Live Example — Oil Spec Repeat Query</div>
-            <div class="branch-text">A technician on the morning shift asks "What is the oil specification for G-900?" and the full tri-store pipeline runs for approximately 810ms, returning ISO VG 220 gear oil as the correct specification. Five minutes later, a second technician on a different terminal asks "Oil grade for G-900 gearbox?" — the Redis cache recognises a semantic similarity of 0.97 and returns the identical validated answer in 25ms, saving a full round-trip across all three databases and eliminating one complete LLM inference call from the cost ledger.</div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:rgba(184,114,12,0.3);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l1);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l1);">Live Example — Oil Spec Repeat Query</div>
+              <div class="branch-text">A technician on the morning shift asks "What is the oil specification for G-900?" and the full tri-store pipeline runs for approximately 810ms, returning ISO VG 220 gear oil as the correct specification. Five minutes later, a second technician on a different terminal asks "Oil grade for G-900 gearbox?" — the Redis cache recognises a semantic similarity of 0.97 and returns the identical validated answer in 25ms, saving a full round-trip across all three databases and eliminating one complete LLM inference call from the cost ledger.</div>
+            </div>
           </div>
         </div>
 
@@ -473,49 +644,79 @@ ELSE
             <path d="M10 26C10 17.16 17.16 10 26 10" stroke="#0A7A75" stroke-width="1.5" stroke-linecap="round"/>
             <path d="M42 26C42 34.84 34.84 42 26 42" stroke="#0A7A75" stroke-width="1.5" stroke-linecap="round"/>
             <rect x="19" y="19" width="14" height="14" rx="2" stroke="#0A7A75" stroke-width="1.5"/>
-            <path d="M23 23h6M23 26h6M23 29h4" stroke="#0A7A75" stroke-width="1" stroke-linecap="round"/>
             <path d="M22 10l4 4-4 4M30 42l-4-4 4-4" stroke="#0A7A75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
       </div>
-      <div class="layer-branches" style="border-color:var(--l2);">
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l2);"></div>
-            <div class="branch-vert" style="background:var(--l2);"></div>
+
+      <div class="layer-body" style="border-color:var(--l2);">
+
+        <!-- Architecture diagram: 3 transform nodes in sequence -->
+        <div style="display:flex;align-items:center;gap:0;margin-bottom:16px;">
+          <div class="store-node" style="border-color:var(--l2);flex:1;">
+            <div class="sn-tag" style="color:var(--l2);">NORMALIZE</div>
+            <div class="sn-name" style="color:var(--l2);">Unit Converter</div>
+            <div class="sn-sub">imperial → metric (regex + LLM)</div>
           </div>
-          <div class="branch-stem" style="background:var(--l2);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l2);">Unit Conversion — Imperial to Metric</div>
-            <div class="branch-text">When a field technician submits a query containing imperial measurements — such as "the shaft is vibrating at 0.5 inches per second" — the pre-processor uses a regex-matched unit mapping table combined with a lightweight LLM call to convert the value to the metric equivalent stored in the database. This prevents zero-result SQL failures caused by unit system mismatches, which are one of the most common silent failure modes in industrial AI deployments.</div>
-            <div class="branch-code">"0.5 inches/sec"    →  12.7 mm/s
+          <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <div class="store-node" style="border-color:var(--l2);flex:1;">
+            <div class="sn-tag" style="color:var(--l2);">RESOLVE</div>
+            <div class="sn-name" style="color:var(--l2);">Entity Linker</div>
+            <div class="sn-sub">colloquial name → DB primary key</div>
+          </div>
+          <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <div class="store-node" style="border-color:var(--l2);flex:1;">
+            <div class="sn-tag" style="color:var(--l2);">MAP</div>
+            <div class="sn-name" style="color:var(--l2);">Slang Normalizer</div>
+            <div class="sn-sub">field language → diagnostic terms</div>
+          </div>
+          <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <div class="store-node" style="border-color:var(--l3);flex:0 0 120px;">
+            <div class="sn-tag" style="color:var(--l3);">NEXT</div>
+            <div class="sn-name" style="color:var(--l3);">→ L3 Orch.</div>
+            <div class="sn-sub">clean structured query</div>
+          </div>
+        </div>
+
+        <div class="branch-list">
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l2);"></div>
+              <div class="branch-vert" style="background:var(--l2);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l2);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l2);">Unit Conversion — Imperial to Metric</div>
+              <div class="branch-text">When a field technician submits a query containing imperial measurements — such as "the shaft is vibrating at 0.5 inches per second" — the pre-processor uses a regex-matched unit mapping table combined with a lightweight LLM call to convert the value to the metric equivalent stored in the database. This prevents zero-result SQL failures caused by unit system mismatches, which are one of the most common silent failure modes in industrial AI deployments.</div>
+              <div class="branch-code">"0.5 inches/sec"    →  12.7 mm/s
 "10 PSI"            →  0.69 Bar
 "120°F"             →  48.9°C
 "3000 RPM at load"  →  RPM_sensor = 3000, context = load</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l2);"></div>
-            <div class="branch-vert" style="background:var(--l2);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l2);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l2);">Entity Linking — Colloquial Names to Database IDs</div>
-            <div class="branch-text">Technicians refer to gearbox assets by shorthand names, site nicknames, or partial identifiers that do not match database primary keys. The pre-processor resolves "GB-402", "the big mill gearbox", or "unit 4 in Plant 7" to their canonical asset identifier in the PostgreSQL schema, ensuring every downstream query references the correct row without requiring the technician to know the internal data model.</div>
-            <div class="branch-code">"GB-402"                →  Asset_ID = 00402
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l2);"></div>
+              <div class="branch-vert" style="background:var(--l2);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l2);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l2);">Entity Linking — Colloquial Names to Database IDs</div>
+              <div class="branch-text">Technicians refer to gearbox assets by shorthand names, site nicknames, or partial identifiers that do not match database primary keys. The pre-processor resolves "GB-402", "the big mill gearbox", or "unit 4 in Plant 7" to their canonical asset identifier in the PostgreSQL schema, ensuring every downstream query references the correct row without requiring the technician to know the internal data model.</div>
+              <div class="branch-code">"GB-402"                →  Asset_ID = 00402
 "the bearing on line 3"  →  Part_ID = BRG-L3-HS
 "Sarah's last job"       →  Tech_ID = T-0047</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:rgba(10,122,117,0.28);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l2);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l2);">Technical Slang Normalization</div>
-            <div class="branch-text">Field language such as "main shaft shaking," "gearbox running hot," or "weird noise from the housing" is classified and mapped to structured diagnostic terms that match the vocabulary used in sensor logs, maintenance records, and technical manuals, giving the orchestrator layer a clean, unambiguous signal to route against all three stores.</div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:rgba(10,122,117,0.28);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l2);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l2);">Technical Slang Normalization</div>
+              <div class="branch-text">Field language such as "main shaft shaking," "gearbox running hot," or "weird noise from the housing" is classified and mapped to structured diagnostic terms that match the vocabulary used in sensor logs, maintenance records, and technical manuals, giving the orchestrator layer a clean, unambiguous signal to route against all three stores.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -551,47 +752,98 @@ ELSE
           </svg>
         </div>
       </div>
-      <div class="layer-branches" style="border-color:var(--l3);">
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l4-sql);"></div>
-            <div class="branch-vert" style="background:var(--l3);"></div>
+
+      <div class="layer-body" style="border-color:var(--l3);">
+
+        <!-- Architecture: central hub → 3 store routes -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:16px;">
+          <!-- Orchestrator hub -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:0;width:100%;">
+            <div style="flex:1;"></div>
+            <div class="store-node" style="border-color:var(--l3);text-align:center;flex:0 0 200px;">
+              <div class="sn-tag" style="color:var(--l3);">HUB</div>
+              <div class="sn-name" style="color:var(--l3);">LangGraph Supervisor</div>
+              <div class="sn-sub">Pydantic entity extractor · intent classifier</div>
+            </div>
+            <div style="flex:1;"></div>
           </div>
-          <div class="branch-stem" style="background:var(--l3);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l4-sql);">SQL Trigger → PostgreSQL Route</div>
-            <div class="branch-text">When the Pydantic entity extractor detects statistical intent — keywords such as "how many," "average," "last serviced," "overdue," "count," or a specific date range — the orchestrator classifies the query as a metrics query and schedules a natural language to SQL translation against the PostgreSQL maintenance log and sensor telemetry tables.</div>
-            <div class="branch-code">Example: "How many gearboxes in Plant 7 have skipped their 6-month oil change?"
+          <!-- 3-way fan-out -->
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;width:90%;margin-top:8px;">
+            <!-- SQL branch -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+              <div style="width:2px;height:22px;background:var(--l4-sql);"></div>
+              <div class="store-node" style="border-color:var(--l4-sql);width:100%;text-align:center;">
+                <div class="sn-tag" style="color:var(--l4-sql);">SQL TRIGGER</div>
+                <div class="sn-name" style="color:var(--l4-sql);">→ PostgreSQL</div>
+                <div class="sn-sub">statistical intent: count, avg, overdue, date</div>
+              </div>
+            </div>
+            <div style="width:24px;"></div>
+            <!-- Vector branch -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+              <div style="width:2px;height:22px;background:var(--l4-vec);"></div>
+              <div class="store-node" style="border-color:var(--l4-vec);width:100%;text-align:center;">
+                <div class="sn-tag" style="color:var(--l4-vec);">VECTOR TRIGGER</div>
+                <div class="sn-name" style="color:var(--l4-vec);">→ Milvus</div>
+                <div class="sn-sub">procedural intent: how-to, torque, protocol</div>
+              </div>
+            </div>
+            <div style="width:24px;"></div>
+            <!-- Graph branch -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;">
+              <div style="width:2px;height:22px;background:var(--l4-neo);"></div>
+              <div class="store-node" style="border-color:var(--l4-neo);width:100%;text-align:center;">
+                <div class="sn-tag" style="color:var(--l4-neo);">GRAPH TRIGGER</div>
+                <div class="sn-name" style="color:var(--l4-neo);">→ Neo4j</div>
+                <div class="sn-sub">relational intent: linked-to, affects, depends</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px;letter-spacing:.06em;">All three fired simultaneously via asyncio.gather()</div>
+        </div>
+
+        <div class="branch-list">
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l4-sql);"></div>
+              <div class="branch-vert" style="background:var(--l3);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l3);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l4-sql);">SQL Trigger → PostgreSQL Route</div>
+              <div class="branch-text">When the Pydantic entity extractor detects statistical intent — keywords such as "how many," "average," "last serviced," "overdue," "count," or a specific date range — the orchestrator classifies the query as a metrics query and schedules a natural language to SQL translation against the PostgreSQL maintenance log and sensor telemetry tables.</div>
+              <div class="branch-code">Example: "How many gearboxes in Plant 7 have skipped their 6-month oil change?"
 → Routed to Postgres → NL-to-SQL →
 SELECT COUNT(*) FROM assets WHERE plant_id=7 AND next_service &lt; NOW()
 → Output: "12 gearboxes are overdue"</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l4-vec);"></div>
-            <div class="branch-vert" style="background:var(--l3);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l3);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l4-vec);">Vector Trigger → Milvus Route</div>
-            <div class="branch-text">When the query contains procedural or instructional intent — phrases like "how to," "torque setting," "correct procedure," "step by step," "safety protocol," or references to specific model numbers alongside technical parameters — the orchestrator routes to Milvus to perform a top-k=5 semantic chunk retrieval across the ingested PDF manuals, lessons-learned reports, and troubleshooting guides.</div>
-            <div class="branch-code">Example: "What is the correct torque for the housing bolts on the G-900 series?"
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l4-vec);"></div>
+              <div class="branch-vert" style="background:var(--l3);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l3);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l4-vec);">Vector Trigger → Milvus Route</div>
+              <div class="branch-text">When the query contains procedural or instructional intent — phrases like "how to," "torque setting," "correct procedure," "step by step," "safety protocol," or references to specific model numbers alongside technical parameters — the orchestrator routes to Milvus to perform a top-k=5 semantic chunk retrieval across the ingested PDF manuals, lessons-learned reports, and troubleshooting guides.</div>
+              <div class="branch-code">Example: "What is the correct torque for the housing bolts on the G-900 series?"
 → Milvus vector search across G-900 Manual collection
 → Output: "120 Nm — page 45, G-900 Series Technical Manual, Rev. 4"</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l4-neo);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l3);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l4-neo);">Graph Trigger → Neo4j Route + asyncio.gather()</div>
-            <div class="branch-text">When the query implies a dependency, impact, or relationship — phrases such as "affects which," "linked to," "what else will fail," or entity names like bearing, seal, shaft, or housing alongside causal language — the orchestrator activates Neo4j for a 2-hop neighbourhood search. All three store queries are fired simultaneously via asyncio.gather(), eliminating the 200–500ms sequential latency that would otherwise compound across stores.</div>
-            <div class="branch-code">Example: "If Seal Type-X runs out, which gearbox models are unrepairable next week?"
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l4-neo);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l3);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l4-neo);">Graph Trigger → Neo4j Route + asyncio.gather()</div>
+              <div class="branch-text">When the query implies a dependency, impact, or relationship — phrases such as "affects which," "linked to," "what else will fail," or entity names like bearing, seal, shaft, or housing alongside causal language — the orchestrator activates Neo4j for a 2-hop neighbourhood search. All three store queries are fired simultaneously via asyncio.gather(), eliminating the 200–500ms sequential latency that would otherwise compound across stores.</div>
+              <div class="branch-code">Example: "If Seal Type-X runs out, which gearbox models are unrepairable next week?"
 → Neo4j Cypher → MATCH (s:Seal {type:'Type-X'})&lt;-[:REQUIRES]-(g:Gearbox) RETURN g.model_name
 → Output: "Models G-900 and G-1200 will be affected as they use that specific seal"</div>
+            </div>
           </div>
         </div>
       </div>
@@ -605,7 +857,7 @@ SELECT COUNT(*) FROM assets WHERE plant_id=7 AND next_service &lt; NOW()
 
 
   <!-- ════════════════════════════════════ -->
-  <!-- L4: TRI-STORE                       -->
+  <!-- L4: TRI-STORE RETRIEVAL             -->
   <!-- ════════════════════════════════════ -->
   <div class="layer-wrap">
     <div class="tri-header">
@@ -688,7 +940,7 @@ RETURN g.model_name
 
 
   <!-- ════════════════════════════════════ -->
-  <!-- L5: RRF FUSION                      -->
+  <!-- L5: CONTEXT FUSION & RERANKER       -->
   <!-- ════════════════════════════════════ -->
   <div class="layer-wrap">
     <div class="layer-row">
@@ -707,40 +959,87 @@ RETURN g.model_name
           </svg>
         </div>
       </div>
-      <div class="layer-branches" style="border-color:var(--l5);">
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l5);"></div>
-            <div class="branch-vert" style="background:var(--l5);"></div>
+
+      <div class="layer-body" style="border-color:var(--l5);">
+
+        <!-- Architecture: 3 store results → RRF → cross-encoder → top-N -->
+        <div style="display:flex;align-items:center;gap:0;margin-bottom:16px;">
+          <!-- 3 input nodes stacked -->
+          <div style="display:flex;flex-direction:column;gap:6px;flex:0 0 140px;">
+            <div class="store-node" style="border-color:var(--l4-sql);">
+              <div class="sn-tag" style="color:var(--l4-sql);">SQL RESULTS</div>
+              <div class="sn-name" style="color:var(--l4-sql);">PostgreSQL rows</div>
+              <div class="sn-sub">ranked by SQL relevance</div>
+            </div>
+            <div class="store-node" style="border-color:var(--l4-vec);">
+              <div class="sn-tag" style="color:var(--l4-vec);">VECTOR RESULTS</div>
+              <div class="sn-name" style="color:var(--l4-vec);">Milvus chunks top_k=5</div>
+              <div class="sn-sub">ranked by cosine sim</div>
+            </div>
+            <div class="store-node" style="border-color:var(--l4-neo);">
+              <div class="sn-tag" style="color:var(--l4-neo);">GRAPH RESULTS</div>
+              <div class="sn-name" style="color:var(--l4-neo);">Neo4j subgraph</div>
+              <div class="sn-sub">ranked by hop depth</div>
+            </div>
           </div>
-          <div class="branch-stem" style="background:var(--l5);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l5);">Reciprocal Rank Fusion — Three Worlds, One Ranked List</div>
-            <div class="branch-text">The system receives up to 5 document chunks from Milvus, 3 result rows from PostgreSQL, and a subgraph from Neo4j — each ranked within its own retrieval system but incomparable to one another. RRF normalises these into a single unified ranking by computing a harmonic score based on each result's position across stores, ensuring that a highly-ranked SQL row and a highly-ranked manual excerpt can be compared and ordered before reaching the language model.</div>
-            <div class="branch-code">RRF_score(d) = Σ  1 / (k + rank_i(d))   where k=60
+          <div class="hconn" style="width:32px;"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <!-- RRF box -->
+          <div class="store-node" style="border-color:var(--l5);flex:0 0 130px;text-align:center;">
+            <div class="sn-tag" style="color:var(--l5);">STEP 1</div>
+            <div class="sn-name" style="color:var(--l5);">RRF Fusion</div>
+            <div class="sn-sub">Reciprocal Rank Fusion<br>k=60, cross-store rank</div>
+          </div>
+          <div class="hconn" style="width:32px;"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <!-- BGE box -->
+          <div class="store-node" style="border-color:var(--l5);flex:0 0 150px;text-align:center;">
+            <div class="sn-tag" style="color:var(--l5);">STEP 2</div>
+            <div class="sn-name" style="color:var(--l5);">BGE Cross-Encoder</div>
+            <div class="sn-sub">joint (query, candidate) pair<br>scoring · discard irrelevant</div>
+          </div>
+          <div class="hconn" style="width:32px;"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <!-- Output -->
+          <div class="store-node" style="border-color:var(--l6);flex:1;text-align:center;">
+            <div class="sn-tag" style="color:var(--l6);">OUTPUT</div>
+            <div class="sn-name" style="color:var(--l6);">Top-N Ranked Context</div>
+            <div class="sn-sub">grounded facts → LLM context window</div>
+          </div>
+        </div>
+
+        <div class="branch-list">
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l5);"></div>
+              <div class="branch-vert" style="background:var(--l5);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l5);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l5);">Reciprocal Rank Fusion — Three Worlds, One Ranked List</div>
+              <div class="branch-text">The system receives up to 5 document chunks from Milvus, 3 result rows from PostgreSQL, and a subgraph from Neo4j — each ranked within its own retrieval system but incomparable to one another. RRF normalises these into a single unified ranking by computing a harmonic score based on each result's position across stores, ensuring that a highly-ranked SQL row and a highly-ranked manual excerpt can be compared and ordered before reaching the language model.</div>
+              <div class="branch-code">RRF_score(d) = Σ  1 / (k + rank_i(d))   where k=60
 Summed across SQL rank, Vector rank, and Graph rank
 → Single ordered list handed to cross-encoder for final scoring</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l5);"></div>
-            <div class="branch-vert" style="background:var(--l5);"></div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l5);"></div>
+              <div class="branch-vert" style="background:var(--l5);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l5);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l5);">BGE Cross-Encoder — Joint Pair Scoring Discards Irrelevant Results</div>
+              <div class="branch-text">After RRF, the BGE-Reranker-v2-m3 cross-encoder scores every (query, candidate) pair jointly, reading both together rather than independently. This catches cases where a result looks superficially relevant by keyword but is semantically misaligned with the technician's actual intent, and it discards those results before they consume LLM context window tokens. A 2019 manual excerpt stating "maximum temperature 75°C" is correctly ranked below a live PostgreSQL sensor reading showing the bearing is currently at 80°C.</div>
+            </div>
           </div>
-          <div class="branch-stem" style="background:var(--l5);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l5);">BGE Cross-Encoder — Joint Pair Scoring Discards Irrelevant Results</div>
-            <div class="branch-text">After RRF, the BGE-Reranker-v2-m3 cross-encoder scores every (query, candidate) pair jointly, reading both together rather than independently. This catches cases where a result looks superficially relevant by keyword but is semantically misaligned with the technician's actual intent, and it discards those results before they consume LLM context window tokens. A 2019 manual excerpt stating "maximum temperature 75°C" is correctly ranked below a live PostgreSQL sensor reading showing the bearing is currently at 80°C.</div>
-          </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:rgba(179,77,8,0.28);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l5);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l5);">Fusion Example — GB-402 Vibration Query</div>
-            <div class="branch-text">A technician reports "Gearbox GB-402 is vibrating at 12mm/s — is this dangerous and who fixed it last time?" The fused context delivered to the LLM contains three grounded facts ranked in order: first, the PostgreSQL record confirming the 8mm/s threshold for GB-402 and identifying Technician Sarah's last job ID; second, the Milvus chunk from page 67 of the G-900 manual stating vibration above 8mm/s indicates bearing misalignment; third, the Neo4j graph hop resolving Technician Sarah's contact details from her job ID.</div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:rgba(179,77,8,0.28);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l5);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l5);">Fusion Example — GB-402 Vibration Query</div>
+              <div class="branch-text">A technician reports "Gearbox GB-402 is vibrating at 12mm/s — is this dangerous and who fixed it last time?" The fused context delivered to the LLM contains three grounded facts ranked in order: first, the PostgreSQL record confirming the 8mm/s threshold for GB-402 and identifying Technician Sarah's last job ID; second, the Milvus chunk from page 67 of the G-900 manual stating vibration above 8mm/s indicates bearing misalignment; third, the Neo4j graph hop resolving Technician Sarah's contact details from her job ID.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -773,37 +1072,62 @@ Summed across SQL rank, Vector rank, and Graph rank
           </svg>
         </div>
       </div>
-      <div class="layer-branches" style="border-color:var(--l6);">
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l6);"></div>
-            <div class="branch-vert" style="background:var(--l6);"></div>
+
+      <div class="layer-body" style="border-color:var(--l6);">
+
+        <!-- Architecture: context → LLM → streaming output -->
+        <div style="display:flex;align-items:center;gap:0;margin-bottom:16px;">
+          <div class="store-node" style="border-color:var(--l5);flex:0 0 160px;">
+            <div class="sn-tag" style="color:var(--l5);">INPUT</div>
+            <div class="sn-name" style="color:var(--l5);">Top-N Reranked Context</div>
+            <div class="sn-sub">source-attributed facts from L5</div>
           </div>
-          <div class="branch-stem" style="background:var(--l6);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l6);">Grounded, Cited Response Generation</div>
-            <div class="branch-text">The language model receives the top-N reranked context items alongside a system prompt requiring it to attribute every claim to its source — the specific PostgreSQL field and value, the Neo4j relationship traversal, or the manual document name and page number. This prevents hallucination by anchoring every factual statement in a retrievable record, making the output safe for industrial maintenance decisions where an incorrect recommendation can cause equipment failure or personal injury.</div>
+          <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <div class="store-node" style="border-color:var(--l6);flex:1;">
+            <div class="sn-tag" style="color:var(--l6);">GENERATE</div>
+            <div class="sn-name" style="color:var(--l6);">LLM + System Prompt</div>
+            <div class="sn-sub">every claim attributed to its source · no hallucination</div>
+          </div>
+          <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <div class="store-node" style="border-color:var(--l6);flex:0 0 150px;">
+            <div class="sn-tag" style="color:var(--l6);">STREAM</div>
+            <div class="sn-name" style="color:var(--l6);">Token-by-Token</div>
+            <div class="sn-sub">first token ~810ms · streaming to terminal</div>
           </div>
         </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l6);"></div>
-            <div class="branch-vert" style="background:var(--l6);"></div>
+
+        <div class="branch-list">
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l6);"></div>
+              <div class="branch-vert" style="background:var(--l6);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l6);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l6);">Grounded, Cited Response Generation</div>
+              <div class="branch-text">The language model receives the top-N reranked context items alongside a system prompt requiring it to attribute every claim to its source — the specific PostgreSQL field and value, the Neo4j relationship traversal, or the manual document name and page number. This prevents hallucination by anchoring every factual statement in a retrievable record, making the output safe for industrial maintenance decisions where an incorrect recommendation can cause equipment failure or personal injury.</div>
+            </div>
           </div>
-          <div class="branch-stem" style="background:var(--l6);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l6);">Complete Response Example — GB-402 Vibration Case</div>
-            <div class="branch-text">The technician receives the following fully-grounded response: "A vibration level of 12mm/s on Gearbox GB-402 exceeds the operational threshold of 8mm/s recorded in the asset maintenance log (PostgreSQL, asset_id=00402). According to the G-900 Series Technical Manual page 67, vibration amplitudes above 8mm/s are a primary indicator of bearing misalignment or a worn input shaft seal. The most recent maintenance job on this asset was completed by Technician Sarah (Tech_ID T-0047, Neo4j link: GB-402 → last_service → Job_ID_8821). Would you like to send Sarah an urgent notification and raise a work order?"</div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l6);"></div>
+              <div class="branch-vert" style="background:var(--l6);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l6);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l6);">Complete Response Example — GB-402 Vibration Case</div>
+              <div class="branch-text">The technician receives the following fully-grounded response: "A vibration level of 12mm/s on Gearbox GB-402 exceeds the operational threshold of 8mm/s recorded in the asset maintenance log (PostgreSQL, asset_id=00402). According to the G-900 Series Technical Manual page 67, vibration amplitudes above 8mm/s are a primary indicator of bearing misalignment or a worn input shaft seal. The most recent maintenance job on this asset was completed by Technician Sarah (Tech_ID T-0047, Neo4j link: GB-402 → last_service → Job_ID_8821). Would you like to send Sarah an urgent notification and raise a work order?"</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:rgba(59,67,184,0.28);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l6);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l6);">Streaming Output — First Token Appears in ~810ms</div>
-            <div class="branch-text">The response is streamed token-by-token to the technician's terminal so that the first actionable sentence — the threshold breach warning — appears within approximately 810 milliseconds of the original query on a cache miss path, rather than waiting for the full response to complete before displaying anything on screen.</div>
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:rgba(59,67,184,0.28);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l6);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l6);">Streaming Output — First Token Appears in ~810ms</div>
+              <div class="branch-text">The response is streamed token-by-token to the technician's terminal so that the first actionable sentence — the threshold breach warning — appears within approximately 810 milliseconds of the original query on a cache miss path, rather than waiting for the full response to complete before displaying anything on screen.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -837,53 +1161,83 @@ Summed across SQL rank, Vector rank, and Graph rank
           </svg>
         </div>
       </div>
-      <div class="layer-branches" style="border-color:var(--l7);">
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l1);"></div>
-            <div class="branch-vert" style="background:var(--l7);"></div>
+
+      <div class="layer-body" style="border-color:var(--l7);">
+
+        <!-- Architecture: feedback signal → two write paths -->
+        <div style="display:flex;align-items:center;gap:0;margin-bottom:16px;">
+          <div class="store-node" style="border-color:var(--l7);flex:0 0 160px;">
+            <div class="sn-tag" style="color:var(--l7);">TRIGGER</div>
+            <div class="sn-name" style="color:var(--l7);">"This Helped" Click</div>
+            <div class="sn-sub">technician validation signal</div>
           </div>
-          <div class="branch-stem" style="background:var(--l7);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l1);">Redis Write-Back — Query-Response Pair Injected into Cache</div>
-            <div class="branch-text">When a technician clicks "This helped" on a response, the system immediately re-embeds the original query and stores the validated response in Redis with a confidence score of 1.0 and a time-to-live of 30 days. This means any semantically similar question asked within the next month — from any terminal in the plant — will be answered instantly from cache without touching any of the three retrieval stores, compounding speed improvements over time as more resolutions are validated.</div>
-            <div class="branch-code">{
+          <div class="hconn"><div class="hconn-line"></div><div class="hconn-arr"></div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+            <div style="display:flex;align-items:center;gap:0;">
+              <div class="store-node" style="border-color:var(--l1);flex:1;">
+                <div class="sn-tag" style="color:var(--l1);">WRITE-BACK A</div>
+                <div class="sn-name" style="color:var(--l1);">Redis Cache Update</div>
+                <div class="sn-sub">confidence=1.0, TTL=30 days, all terminals</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:0;">
+              <div class="store-node" style="border-color:var(--l4-neo);flex:1;">
+                <div class="sn-tag" style="color:var(--l4-neo);">WRITE-BACK B</div>
+                <div class="sn-name" style="color:var(--l4-neo);">Neo4j Edge Create</div>
+                <div class="sn-sub">VALIDATED_SOLUTION node · tech ID + timestamp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-list">
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l1);"></div>
+              <div class="branch-vert" style="background:var(--l7);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l7);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l1);">Redis Write-Back — Query-Response Pair Injected into Cache</div>
+              <div class="branch-text">When a technician clicks "This helped" on a response, the system immediately re-embeds the original query and stores the validated response in Redis with a confidence score of 1.0 and a time-to-live of 30 days. This means any semantically similar question asked within the next month — from any terminal in the plant — will be answered instantly from cache without touching any of the three retrieval stores, compounding speed improvements over time as more resolutions are validated.</div>
+              <div class="branch-code">{
   "query_vector": [...],
   "response": "12mm/s exceeds 8mm/s threshold...",
   "validated_by": "Tech_ID_T-0047",
   "confidence": 1.0,
   "ttl_days": 30
 }</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:var(--l4-neo);"></div>
-            <div class="branch-vert" style="background:var(--l7);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l7);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l4-neo);">Neo4j Edge Creation — Validated Solution Node Written to Graph</div>
-            <div class="branch-text">Simultaneously, the orchestrator writes a new VALIDATED_SOLUTION relationship node into Neo4j, connecting the specific gearbox asset, the diagnosed symptom, and the resolution text with the validating technician's ID and the timestamp. This means the next time any technician queries a vibration issue on any gearbox in the G-900 family, the 2-hop neighbourhood search will surface this field-proven resolution as a first-class result ranked above unvalidated manual excerpts, allowing the system's knowledge to grow organically from real plant experience.</div>
-            <div class="branch-code">MERGE (sol:Solution {id:'SOL-8821'})
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:var(--l4-neo);"></div>
+              <div class="branch-vert" style="background:var(--l7);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l7);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l4-neo);">Neo4j Edge Creation — Validated Solution Node Written to Graph</div>
+              <div class="branch-text">Simultaneously, the orchestrator writes a new VALIDATED_SOLUTION relationship node into Neo4j, connecting the specific gearbox asset, the diagnosed symptom, and the resolution text with the validating technician's ID and the timestamp. This means the next time any technician queries a vibration issue on any gearbox in the G-900 family, the 2-hop neighbourhood search will surface this field-proven resolution as a first-class result ranked above unvalidated manual excerpts, allowing the system's knowledge to grow organically from real plant experience.</div>
+              <div class="branch-code">MERGE (sol:Solution {id:'SOL-8821'})
 MERGE (a)-[:HAS_SYMPTOM]->(s)
 MERGE (s)-[:RESOLVED_BY {
   validated_by: 'T-0047',
   date: '2025-06-14'
 }]->(sol)</div>
+            </div>
           </div>
-        </div>
-        <div class="branch">
-          <div class="branch-line">
-            <div class="branch-dot" style="background:rgba(22,94,50,0.28);"></div>
-          </div>
-          <div class="branch-stem" style="background:var(--l7);"></div>
-          <div class="branch-content">
-            <div class="branch-label" style="color:var(--l7);">Compounding Value — Field Knowledge Beats Manual Lag</div>
-            <div class="branch-text">OEM technical manuals are often years out of date. After twelve months of validated feedback from plant technicians, the Neo4j graph accumulates dozens of confirmed resolutions tied to specific assets, failure modes, and environmental conditions in the exact facility. These field-validated solutions surface above generic manual content in every future query, meaning the system's accuracy improves continuously without requiring any model retraining, manual data entry, or engineering intervention.</div>
-            <div class="fb-badge">
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#165E32" stroke-width="1.5" stroke-linecap="round"/></svg>
-              System intelligence compounds with every validated field resolution
+          <div class="branch">
+            <div class="branch-line">
+              <div class="branch-dot" style="background:rgba(22,94,50,0.28);"></div>
+            </div>
+            <div class="branch-stem" style="background:var(--l7);"></div>
+            <div class="branch-content">
+              <div class="branch-label" style="color:var(--l7);">Compounding Value — Field Knowledge Beats Manual Lag</div>
+              <div class="branch-text">OEM technical manuals are often years out of date. After twelve months of validated feedback from plant technicians, the Neo4j graph accumulates dozens of confirmed resolutions tied to specific assets, failure modes, and environmental conditions in the exact facility. These field-validated solutions surface above generic manual content in every future query, meaning the system's accuracy improves continuously without requiring any model retraining, manual data entry, or engineering intervention.</div>
+              <div class="fb-badge">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="#165E32" stroke-width="1.5" stroke-linecap="round"/></svg>
+                System intelligence compounds with every validated field resolution
+              </div>
             </div>
           </div>
         </div>
